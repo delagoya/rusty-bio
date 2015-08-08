@@ -1,35 +1,87 @@
+
+#********** osx template********** 
+
+.DS_Store
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+ 
+
+#********** ruby template********** 
+
 *.gem
 *.rbc
-/.config
-/coverage/
-/InstalledFiles
-/pkg/
-/spec/reports/
-/test/tmp/
-/test/version_tmp/
-/tmp/
+.bundle
+.config
+coverage
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
 
-## Specific to RubyMotion:
-.dat*
-.repl_history
-build/
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+ 
 
-## Documentation cache and generated files:
-/.yardoc/
-/_yardoc/
-/doc/
-/rdoc/
+#********** emacs template********** 
 
-## Environment normalisation:
-/.bundle/
-/vendor/bundle
-/lib/bundler/man/
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
 
-# for a library or gem, you might want to ignore these files since the code is
-# intended to run in multiple environments; otherwise, check them in:
-# Gemfile.lock
-# .ruby-version
-# .ruby-gemset
+# Org-mode
+.org-id-locations
+*_archive
+ 
 
-# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
-.rvmrc
+#********** textmate template********** 
+
+*.tmproj
+*.tmproject
+tmtags
+ 
+
+#********** windows template********** 
+
+# Windows image file caches
+Thumbs.db 
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+ 
+
+#********** sublimetext template********** 
+
+# SublimeText project files
+/*.sublime-project
+*.sublime-workspace
+ 
+
+#********** sass template********** 
+
+### SASS Ignores - "Sassy CSS" http://sass-lang.com/
+.sass-cache
+ 
+
+#********** jekyll template********** 
+
+_site/
+ 
