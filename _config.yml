@@ -4,10 +4,10 @@
 baseurl: /rusty-bio
 
 # Site live URL
-url: http://delagoya.github.io
+# url: http://delagoya.github.io
 
 # Localhost 
-url: http://127.0.0.1:4000
+# url: http://127.0.0.1:4000
 
 # Harmony theme configuration. Please change accordingly.
 harmony:
