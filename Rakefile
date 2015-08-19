@@ -12,7 +12,21 @@ end
 
 desc  'create a draft post'
 task :draft do 
-  title = ARGV[1].gsub(/[^0-9a-zA-z]/,'-').downcase
-  `touch _drafts/#{title}.md`
+  require "time"
+  title = ARGV[1].strip
+  title_dc = title.gsub(/[^0-9a-zA-z]/,'-').downcase
+  header = <<EOF
+---
+layout: post
+title:  "#{title}"
+date:  #{Time.now}
+categories:
+- blog
+permalink: #{title_dc}
+#{ if ARGV[2] then "description: " + ARGV[2] end}
+---
+EOF
+  File.open("_drafts/#{title_dc}.md", "w").write(header)
   exit(0)
 end
+

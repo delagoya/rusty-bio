@@ -13,8 +13,8 @@ baseurl: /rusty-bio
 harmony:
   name: Rusty Bioinformatics
   # Little description about your site
-  description:  Learning Rust in the context of bioinformatics.
-  meta_description: A website for me to write about learning Rust in the context of bioinforamtics.
+  description:  Back to the basics of bioinformatics.
+  meta_description: Me (re)learning programming in bioinformatics concepts
   basetheme: theme-base-01 # pre defined thmes are darken, blue-water, redish.
   author: # Author details
     name: Angel Pizarro
