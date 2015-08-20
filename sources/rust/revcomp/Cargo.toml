@@ -1,0 +1,5 @@
+[package]
+name = "revcomp"
+version = "0.1.0"
+authors = ["Angel Pizarro <delagoya@gmail.com>"]
+

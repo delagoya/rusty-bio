@@ -33,8 +33,9 @@ harmony:
   show_disclaimer: true
 
 # Conversion / Build settings 
-# markdown:    kramdown
+markdown:    redcarpet
 highlighter: pygments
+
 # Permalinks
 permalink: pretty
 

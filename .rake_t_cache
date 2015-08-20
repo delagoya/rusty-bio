@@ -1,0 +1,3 @@
+rake check    # Search site and print specific deprecation warnings
+rake draft    # create a draft post
+rake preview  # Preview the site with Jekyll
