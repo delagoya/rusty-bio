@@ -167,4 +167,6 @@ $ ./target/debug/revcomp NotaDNAsequence
 thread '<main>' panicked at 'Input sequence base is not DNA: NotaDNAsequence', src/main.rs:23
 ```
 
-Success! You can view the full source tree for this program at 
+Success! You can view the full source tree for this program at [sources/rust/revcomp](https://github.com/delagoya/rusty-bio/tree/gh-pages/sources/rust/revcomp)
+
+https://github.com/delagoya/rusty-bio/tree/gh-pages/sources/rust/revcomp 

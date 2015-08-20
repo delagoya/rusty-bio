@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Getting Started"
-date:  2015-08-20 11:30:38
+date:  2015-08-19 11:30:38
 categories:
 - blog
 - rust
