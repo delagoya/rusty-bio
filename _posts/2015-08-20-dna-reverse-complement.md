@@ -7,6 +7,7 @@ categories:
 - rust
 - bioinformatics
 permalink: dna-reverse-complement
+description: A small Rust program to provide the reverse complement of a DNA sequence
 
 ---
 
