@@ -11,11 +11,11 @@ description: A small Rust program to provide the reverse complement of a DNA seq
 
 ---
 
-In the [last post](getting-started), we outlined to the requirements for a command line program to reverse complement a DNA sequence: 
+In the [last post]({{ "/getting-started" | prepend: site.baseurl }}), we outlined to the requirements for a command line program to reverse complement a DNA sequence: 
 
-- [ ] The program must take in an argument consisting of DNA sequence via STDIN 
-- [ ] If the input is not DNA (consists only of "ATGC" characters), then throw an error
-- [ ] Else output the reverese complement sequence as STDOUT
+- The program must take in an argument consisting of DNA sequence via STDIN 
+- If the input is not DNA (consists only of "ATGC" characters), then throw an error
+- Else output the reverese complement sequence as STDOUT
 
 
 Let's hop to it! We'll start with writing the tests for a small function to decide whether any given character is a DNA character in `main.rs`. While we could check the entire input with soem regular expression or pattern, here we will do the simple thing and check each DNA base as we iterate through each character of the input. 

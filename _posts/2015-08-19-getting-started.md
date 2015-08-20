@@ -13,7 +13,7 @@ Other than [a good text editor](http://www.sublimetext.com/) (please don't email
 
 ```bash
 
-    brew install rust
+$ brew install rust
 
 ```
 
@@ -22,7 +22,7 @@ Rust includes the [Cargo tool](https://doc.rust-lang.org/stable/book/hello-cargo
 
 ```bash
 
-    cargo new revcomp --bin
+$ cargo new revcomp --bin
 
 ```
 
