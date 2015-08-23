@@ -22,7 +22,7 @@ harmony:
     url: http://delagoya.github.io
 
   # Google Analytics key, leave blank to ignore
-  # google_analytics_key: UA-xxxx-x
+  google_analytics_key: UA-66642160-1
 
   # Profile links, leave blank to ignore
   social: 
