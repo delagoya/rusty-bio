@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "# Ruby Queue, Part Duex (1)"
+title:  "Ruby Queue, Part Duex (1)"
 date:  2015-08-20 14:55:57 -0400
 categories:
 - blog
