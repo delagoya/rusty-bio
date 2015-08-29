@@ -61,5 +61,6 @@ aws sqs get-queue-url --queue-name vcfindex
 
 ```
 
+## Step 2: ...
 
-In next installment, we will be 
+In next installment, we will be continuing our setup of the AWS environment by creating an Instance Profile so that we do not expose our access keys unnecessarily.
