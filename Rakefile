@@ -13,14 +13,13 @@ end
 desc  'create a draft post'
 task :draft do 
   require "time"
-  t = Time.now
   title = ARGV[1].strip
   title_dc = title.gsub(/[^0-9a-zA-z]/,'-').downcase
   header = <<EOF
 ---
 layout: post
 title:  "#{title}"
-date:  #{t}
+date:  #{Time.now}
 categories:
 - blog
 - bioinformatics
