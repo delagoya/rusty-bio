@@ -1,4 +1,4 @@
-# Harmony Jekyll theme general configurations 
+# Harmony Jekyll theme general configurations
 
 # Base URL
 baseurl: /rusty-bio
@@ -6,7 +6,7 @@ baseurl: /rusty-bio
 # Site live URL
 # url: http://delagoya.github.io
 
-# Localhost 
+# Localhost
 # url: http://127.0.0.1:4000
 
 # Harmony theme configuration. Please change accordingly.
@@ -25,21 +25,21 @@ harmony:
   google_analytics_key: UA-66642160-1
 
   # Profile links, leave blank to ignore
-  social: 
+  social:
     github: delagoya
     twitter: delagoya
     gplus: 107123789381974740251
   # Toggle disclaimer in footer
   show_disclaimer: true
 
-# Conversion / Build settings 
-markdown:    redcarpet
+# Conversion / Build settings
+markdown:    kramdown
 highlighter: pygments
 
 # Permalinks
 permalink: pretty
 
-exclude: 
+exclude:
   - CNAME
   - Gemfile
   - Rakefile
