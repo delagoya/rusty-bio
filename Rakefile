@@ -6,20 +6,21 @@ task :preview do
 end
 
 desc 'Search site and print specific deprecation warnings'
-task :check do 
+task :check do
     sh "bundle exec jekyll doctor"
 end
 
 desc  'create a draft post'
-task :draft do 
+task :draft do
   require "time"
+  t = Time.now
   title = ARGV[1].strip
   title_dc = title.gsub(/[^0-9a-zA-z]/,'-').downcase
   header = <<EOF
 ---
 layout: post
 title:  "#{title}"
-date:  #{Time.now}
+date:  #{t}
 categories:
 - blog
 - bioinformatics
@@ -31,4 +32,3 @@ EOF
   File.open("_posts/#{t.strftime("%Y-%m-%d")}-#{title_dc}.md", "w").write(header)
   exit(0)
 end
-
