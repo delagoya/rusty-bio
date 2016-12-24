@@ -21,7 +21,7 @@ The goals I set out for myself where:
 The tangential rabbit hole I fell into was in developing routines to parse out the data within a BAM index file into DynamoDB for easy lookup. For easier reference, below is the description of the index format pulled from the [SAM format specification](http://samtools.github.io/hts-specs/SAMv1.pdf).
 
 
-![BAI binary file structure]({{site.url}}/assets/2016-12-23-binary-file-parsing-in-bioinformatics/bai_spec.png)
+![BAI binary file structure]({{site.url}}/{{site.baseurl}}/assets/2016-12-23-binary-file-parsing-in-bioinformatics/bai_spec.png)
 
 
 There are no tools that independently inspect this binary format and spit out the information into text, only tools (e.g. PICARD, samtools) that use the index for random access into BAM files. If I wanted that information I would either need to calculate the file offsets myself (as is done in the excellent [htsnexus](https://github.com/dnanexus-rnd/htsnexus)) or implement my own binary file parser for BAI files.
