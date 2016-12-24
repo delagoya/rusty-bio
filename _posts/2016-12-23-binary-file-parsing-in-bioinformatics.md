@@ -26,23 +26,23 @@ The tangential rabbit hole I fell into was in developing routines to parse out t
 
 There are no tools that independently inspect this binary format and spit out the information into text, only tools (e.g. PICARD, samtools) that use the index for random access into BAM files. If I wanted that information I would either need to calculate the file offsets myself (as is done in the excellent [htsnexus](https://github.com/dnanexus-rnd/htsnexus)) or implement my own binary file parser for BAI files.
 
-Since I was targeting the [Python runtime for Lambda](http://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html) I found two packages that would fit the bill to define the grammer of the binary data into objects that I could easily use,  [construct](http://construct.readthedocs.io/en/latest/) and [Kaitai Struct](http://kaitai.io).
+Since I was targeting the [Python runtime for Lambda](http://docs.aws.amazon.com/lambda/latest/dg/lambda-python-how-to-create-deployment-package.html) I found two packages that would fit the bill to define the grammer of the binary data into objects that I could easily use,  [Construct](http://construct.readthedocs.io/en/latest/) and [Kaitai Struct](http://kaitai.io).
 
 Yes, I could have used the core `struct` Python library, but I wanted a slightly higher level interface to the binary grammer. Both `construct` and `kaitai-struct` result in more readable and maintainable code, and both provide concepts for dealing with common data structures that I would have had to deal with on my own. Let's compare these methods on the binary file format for BAM index files that
 
 ## Construct
 
-[Construct](http://construct.readthedocs.io) is "a powerful declerative parser (and builder) for binary data". The library provides primitives for common atomic constructs (e.g. different size integers) and more advanced data structures to allow for defining composite structures. You can read more about it at their site, but I think that an example is best. Let take a look at a `chunk` which is a pair of virtual file offsets in BAI files. A virtual file offset (section 4.1.1 of the SAM specification) is a tuple of locations. The first element is the location of the start of a compressed block within a BAM file (`coffset`), and the second element is the offset of an alignment within the **uncompressed** data in that block of data. Logically you encode this tuple in a 64 bit integer like so:
+[Construct](http://construct.readthedocs.io) is "a powerful declerative parser (and builder) for binary data". The library provides primitives for common atomic constructs (e.g. different size integers) and more advanced data structures to allow for defining composite structures. You can read more about it at their site, but I think that an example is best. Let take a look at a `chunk` which is a pair of virtual file offsets in BAI files. A virtual file offset (section 4.1.1 of the SAM specification) is a tuple of byte offset locations in a BAM file. The first element is the location of the start of a compressed block within a BAM file (`coffset`), and the second element is the offset of an alignment within the **uncompressed** data in that block (`uoffset`). Logically you encode this tuple in a 64 bit integer like so:
 
 ```
-# shift coffset by 16 bits, then XOR the uoffset location
+# left shift coffset by 16 bits, then OR the uoffset location for the final voffset value
 coffset << 16 | uoffset
 ```
 
-So a `chunk` defined using `construct` would be:
+So a `chunk` defined using Construct would be:
 
 ```python
-SVOffset = Struct(
+SVoffset = Struct(
     "orig" / Int64ul,
     "coffset" / Computed(this.orig >> 16),
     "uoffset" / Computed(this.orig ^ (this.coffset << 16))
@@ -54,7 +54,7 @@ SChunk = Struct(
 )
 ```
 
-For `SVOffset` we first need to consume the 64-bit integer from the binary stream, then compute the actual tuple of byte offsets from the original value of the current object using `this`. A `SChunk` object is composed of two of the `SVOffset` objects. For structs that have a variable number of sub-structures, you can also compute the value of the number of elements at runtime using these reference semantics. For example, from the figure above, we see that a  `bin` defines the number of chunks it has by the `n_chunk` attribute. Thus we can define an `Array` of type `SChunk` in the `SBin` object like so:
+For `SVoffset` we first need to consume the 64-bit integer from the binary stream, then compute the actual tuple of byte offsets from the original value of the current object using `this`. A `SChunk` object is composed of two of the `SVoffset` objects. For structs that have a variable number of sub-structures, you can also compute the value of the number of elements at runtime using these reference semantics. For example, from the figure above, we see that a  `bin` defines the number of chunks it has by the `n_chunk` attribute. Thus we can define an `Array` of type `SChunk` in the `SBin` object like so:
 
 ```python
 SBin = Struct(
@@ -136,11 +136,11 @@ bin=37450,chunk=[Container:
     uoffset = 1551040512]
 ```
 
-The result is pretty nice, but I found that on even medium files, the memory explodes as all of the data are read into memory. For example on a 6MB BAI file for NA12878 exome from genome in a bottle, the memory usage was about 475MB and took about 25 seconds on my iMac. AWS Lambda has a ceiling of 1.5GB of memory and for larger BAI we may run into that limit. It also meters by the 100 microseconds, so we want to minimize both of these while we can. While I could have looked into `construct`'s [lazy parsing features](http://construct.readthedocs.io/en/latest/lazy.html), I decided (e.g. task avoidance level 11) to take a look at another toolchain, [Kaitai Struct](http://kaitai.io)
+The result is pretty nice, but I found that on even medium files, the memory explodes as all of the data are read into memory. For example on a 6MB BAI file for NA12878 exome from genome in a bottle, the memory usage was about 475MB and took about 25 seconds on my iMac. AWS Lambda has a ceiling of 1.5GB of memory and for larger BAI we may run into that limit. It also meters by the 100 microseconds, so we want to minimize both of these while we can. While I could have looked into Construct's [lazy parsing features](http://construct.readthedocs.io/en/latest/lazy.html), I decided (e.g. task avoidance level 11) to take a look at another toolchain, [Kaitai Struct](http://kaitai.io)
 
 ## Kaitai Struct
 
-In contrast to `construct`, Kaitai Struct utilizes a YAML-based grammer file to define the underlying binary structure, and comes with a compiler (written in Scala) to generate files for different languages, including C++, C#, Java, Javascript, Perl, PHP, Ruby, and of course Python. There are also ongoing work to support Rust and Swift.
+In contrast to Construct, Kaitai Struct utilizes a YAML-based grammer file to define the underlying binary structure, and comes with a compiler (written in Scala) to generate files for different languages, including C++, C#, Java, Javascript, Perl, PHP, Ruby, and of course Python. There are also ongoing work to support Rust and Swift.
 
 Let's take a look at the YAML definition for virtual file offsets and chunks and the resulting Python code.
 
@@ -224,7 +224,7 @@ bin=37450,chunk=[[969, 63504384],[23667, 1551040512]]
 bin=37450,chunk=[[0, 223],[0, 48]]
 ```
 
-When I ran this script ran on the NA12878 exome BAM index, it took roughly 900Mb at peak, but only 7 seconds of wall time. So much faster than Construct but it hogs way more memory. Kaitai Stuct does not really provide a grammer for stream or lazy processing, but each language runtime does provide access to a buffer system, and the generated code give good example of how to use it (e.g. `KaitaiStream`) so one could parse a stream as needed to feed into `KaitaiStruct`s as necessary. Also I would assume that using the C++ STL target would reduce the memory overhead that Python strings incur.
+When I ran this script ran on the NA12878 exome BAM index, it took roughly 900Mb at peak, but only 7 seconds of wall time. So much faster than Construct but it hogs way more memory. Kaitai Stuct does not really provide a grammer for stream or lazy processing, but each language runtime does provide access to a buffer system, and the generated code give good example of how to use it (e.g. `KaitaiStream`) so one could parse a stream as needed to feed into `KaitaiStruct` as necessary. Also I would assume that using the C++ STL target would reduce the memory overhead that Python strings incur.
 
 Well that was a fun tangent. I end this post with the complete Kaitai Struct YAML grammer for BAI files. For bonus points I also describe BGZF and BAM, but have tested these so use at your own risk. Enjoy!
 
