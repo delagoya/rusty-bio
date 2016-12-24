@@ -153,7 +153,7 @@ s_voffset:
     coffset:
       value: orig >> 16
     uoffset:
-      value: orig ^ (coffset >> 16)
+      value: orig ^ (coffset << 16)
 s_chunk:
     seq:
       - id: chunk_beg
@@ -257,7 +257,7 @@ types:
       coffset:
         value: orig >> 16
       uoffset:
-        value: orig ^ (coffset >> 16)
+        value: orig ^ (coffset << 16)
   chunk:
     seq:
       - id: chunk_beg
