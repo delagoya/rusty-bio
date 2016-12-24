@@ -34,7 +34,7 @@ harmony:
 
 # Conversion / Build settings
 markdown:    kramdown
-highlighter: pygments
+highlighter: rouge
 
 # Permalinks
 permalink: pretty
